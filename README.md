@@ -1,30 +1,24 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+## About This Project
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This project was deployed on Vercel, for visiting the website, click the url link above.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+This is a full-stack Netflix clone project. First, you can register an account to login, it will redirect you to the homepage. At the homepage, you can watch some clips of movies and check the information of it. And also you can add movies to your list.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+For making this project:
 
-## Learn More
+- React for the frontend
+- NextJS for routing and server side rendering
+- Tailwind for css management
+- Prisma for database management
+- MongoDB for backend storage
+
+
+## Learn More About Next.js
 
 To learn more about Next.js, take a look at the following resources:
 
@@ -38,3 +32,42 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## Problems I faced during the Deployment process
+
+https://www.prisma.io/docs/orm/more/help-and-troubleshooting/help-articles/vercel-caching-issue
+
+If you are working on a project which also using Prisma for database management, during the deployment process on Vercel, you may face an error like this:
+
+```bash
+Prisma has detected that this project was built on Vercel, which caches dependencies.
+This leads to an outdated Prisma Client because Prisma's auto-generation isn't triggered.
+To fix this, make sure to run the `prisma generate` command during the build process.
+
+Learn how: https://pris.ly/d/vercel-build
+```
+
+This is mainly because Vercel caches the dependencies of projects until one of those dependencies changes. And you can easily solve this error in two ways by following the docs, the url link above.
+
+## Possible errors you may face during the connecting process of MongoDB Atlas
+
+- The connection string
+  
+For the varation of the version of MongoDB Atlas, the provided form of connection string may not be the correct form for you. In this project, connection string for VS code have been used. The connection string provided by MongoDB Atlas was something like this:
+
+```bash
+mongodb+srv://<Your Account Name>:<Your Password>@<Your Database Name>.<Random string>.mongodb.net/
+```
+
+However, if you just use this form of the string, I think you probably will face a error when you do ``` prisma db push ```. To solve this problem, you need arrange the string's form a little bit :
+
+```bash
+mongodb+srv://<Your Account Name>:<Your Password>@<Your Database Name>.<Random string>.mongodb.net/<Your Collection Name>?retryWrites=true&w=majority
+```
+
+So basically you should add the context above after " net/ ", and for the collection name part, you can just name whatever you want. And in fact, if you have a look of the doc, this part will auto generate for you.
+
+- The access IP address
+
+When you successfully connected to you Mongo firstly, after a period, you may lose the connection of it. It may caused by multi factors, but one of the most common possible problem is the setting of the access IP address in you Mongo. If you are in a Wi-Fi environment, your IP address might be a " Dynamic IP address ", and its means that it will auto-change when you restart your PC or reconnect to your Wi-Fi. And in Mongo, they have a control of the accessing of the IP address. For letting all IP address be able to connect to your database, you can go to your " Network Access " section. and click " Add IP Address ". And put ``` 0.0.0.0/0``` in it, it will allow all IP address to connect to your db. 
+ 
